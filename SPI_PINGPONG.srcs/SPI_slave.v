@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module SPI_slave(clk, sck, mosi, miso, ssel, byteReceived, receivedData, dataNeeded, dataToSend);
+module SPI_slave(clk, sck, mosi, miso, ssel, byteReceived, receivedData, dataNeeded, dataToSend, sck_risingEdge);
   input wire clk;
   input wire sck;
   input wire mosi;
@@ -10,6 +10,7 @@ module SPI_slave(clk, sck, mosi, miso, ssel, byteReceived, receivedData, dataNee
   output reg[7:0] receivedData = 8'b00000000;
   output wire dataNeeded;
   output wire[7:0] dataToSend;
+  output wire sck_risingEdge;
 
   reg[1:0] sckr;
   reg[1:0] mosir;
@@ -24,7 +25,8 @@ module SPI_slave(clk, sck, mosi, miso, ssel, byteReceived, receivedData, dataNee
     else
       sckr <= { sckr[0], sck };
   end
-  wire sck_risingEdge = (sckr == 2'b01);
+  
+  assign sck_risingEdge = (sckr == 2'b01);
   wire sck_fallingEdge = (sckr == 2'b10);
         
   always @(posedge clk) begin
@@ -51,8 +53,9 @@ module SPI_slave(clk, sck, mosi, miso, ssel, byteReceived, receivedData, dataNee
 
   always @(posedge clk) begin
     if(~ssel_active)
-      dataToSendBuffer <= 8'h00;
-    else if(bitcnt == 3'b000)
+      // dataToSendBuffer <= 8'h00;
+      dataToSendBuffer <= dataToSend;
+    else if((bitcnt == 3'b000) && (sck_fallingEdge))
       dataToSendBuffer <= dataToSend;
     else if(sck_fallingEdge)
       dataToSendBuffer <= { dataToSendBuffer[6:0], 1'b0};
