@@ -14,9 +14,9 @@ wea 一直置高，知道ssel 信号拉高，发送finisha，然后把wea拉低�
 
 一个sck之后，byteReceived才置为0；
 
-![1562414354119](https://github.com/Ryushane/SPI-with-PINGPONG-RAM/tree/master/Picture/1562414354119.png)
+![1562414354119](https://github.com/Ryushane/SPI-with-PINGPONG-RAM/blob/master/Picture/1562414354119.png)
 
-![1562479051669](https://github.com/Ryushane/SPI-with-PINGPONG-RAM/tree/master/Picture/1562479051669.png)
+![1562479051669](https://github.com/Ryushane/SPI-with-PINGPONG-RAM/blob/master/Picture/1562479051669.png)
 
 Ref: ADuCM datasheet 
 
@@ -24,7 +24,7 @@ Mode 0下，从设备上升沿采样，下降沿输出。
 
 
 
-![1562479111547](https://github.com/Ryushane/SPI-with-PINGPONG-RAM/tree/master/Picture/1562479111547.png)
+![1562479111547](https://github.com/Ryushane/SPI-with-PINGPONG-RAM/blob/master/Picture/1562479111547.png)
 
 Master设备在上升沿接受MISO的数据，上升沿采样，下降沿输出
 
@@ -58,7 +58,7 @@ readyb 可以读取
 
 RAM 和给定的地址差两拍。先给地址，在把地址赋值给寄存器。这两个操作各需要一拍子。
 
-![1562572799835](https://github.com/Ryushane/SPI-with-PINGPONG-RAM/tree/master/Picture/1562572799835.png)
+![1562572799835](https://github.com/Ryushane/SPI-with-PINGPONG-RAM/blob/master/Picture/1562572799835.png)
 
 ## 关于几个端口ready信号的问题
 
@@ -116,7 +116,7 @@ DSP不应该和SPI相连
 
 但是什么时候读取数据与Chip Select相关，需要检测上升沿，也需要时钟
 
-![1562746352708](https://github.com/Ryushane/SPI-with-PINGPONG-RAM/tree/master/Picture/1562746352708.png)
+![1562746352708](https://github.com/Ryushane/SPI-with-PINGPONG-RAM/blob/master/Picture/1562746352708.png)
 
 这里wea1 = readyb0 && readya1
 
@@ -124,7 +124,7 @@ DSP不应该和SPI相连
 
 读取要慢两拍子，wea1和b1的地址要打两拍
 
-![1562746674850](https://github.com/Ryushane/SPI-with-PINGPONG-RAM/tree/master/Picture/1562746674850.png)
+![1562746674850](https://github.com/Ryushane/SPI-with-PINGPONG-RAM/blob/master/Picture/1562746674850.png)
 
 前八个数据
 
@@ -141,12 +141,12 @@ DSP不应该和SPI相连
 10000110	86
 00000000	00
 
-![1562747129868](https://github.com/Ryushane/SPI-with-PINGPONG-RAM/tree/master/Picture/1562747129868.png)
+![1562747129868](https://github.com/Ryushane/SPI-with-PINGPONG-RAM/blob/master/Picture/1562747129868.png)
 
-![1562759408451](https://github.com/Ryushane/SPI-with-PINGPONG-RAM/tree/master/Picture/1562759408451.png)
+![1562759408451](https://github.com/Ryushane/SPI-with-PINGPONG-RAM/blob/master/Picture/1562759408451.png)
 
 write enable 与地址统一了
 
-![1562759991090](https://github.com/Ryushane/SPI-with-PINGPONG-RAM/tree/master/Picture/1562759991090.png)
+![1562759991090](https://github.com/Ryushane/SPI-with-PINGPONG-RAM/blob/master/Picture/1562759991090.png)
 
 多了一拍
