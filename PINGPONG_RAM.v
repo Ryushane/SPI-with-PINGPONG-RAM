@@ -24,13 +24,13 @@ module PINGPONG_RAM(
         input rsta,     //reset A
         input [6:0]addra,   //address A
         input wea,      //write enable A
-        input [15:0]dina,    //data input A
+        input [7:0]dina,    //data input A
         input finisha,  //finished A
         output readya,
         input clkb,     //clock B
         input rstb,
         input [6:0]addrb,   //address B
-        output [15:0]doutb,  //dout B
+        output [7:0]doutb,  //dout B
         input finishb,  //finished B
         output readyb   //data ready B
     );

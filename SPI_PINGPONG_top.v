@@ -6,30 +6,21 @@ module SPI_PINGPONG_top(
     input mosi,
     output wire miso,
     output wire DRDY
-    // output wire dataNeeded,
-
-    // output wire readya0,
-    // // output wire[7:0] doutb0,
-    // output wire readyb0,
-
-    // output wire readya1,
-    // // input wire[7:0] dina1,
-    // output wire readyb1
 );
     // SPI 
     wire byteReceived; // 在第八个sck_risingEdge置为1
 
     wire [7:0] receivedData; // shift register
-    wire dataNeeded; // MOSI ready信号
-    // wire [7:0] dataToSend;  
+    // wire dataNeeded; // MOSI ready信号
+    // // wire [7:0] dataToSend;  
 
-    reg[1:0] sselr;
-    wire ssel_active = ~ssel; // ssel 低电平有效
+    // reg[1:0] sselr;
+    // wire ssel_active = ~ssel; // ssel 低电平有效
 
     // RAM0
     wire[7:0] doutb0;
-    wire[7:0] addra0;
-    wire[7:0] addrb0;
+    wire[6:0] addra0;
+    wire[6:0] addrb0;
     wire finisha0;
     wire finishb0;
 
@@ -37,12 +28,13 @@ module SPI_PINGPONG_top(
 
     // RAM1
     wire[7:0] doutb1;
-    wire[7:0] addra1;
-    wire[7:0] addrb1;
+    wire[6:0] addra1;
+    wire[6:0] addrb1;
     wire finisha1;
     wire finishb1;
     wire[7:0] dina1;
     wire wea1;
+    wire readya0;
 
     assign DRDY = readya0 && readyb1;
     
@@ -50,14 +42,16 @@ module SPI_PINGPONG_top(
     SPI_slave  u_SPI_slave (
         .clk                     ( clk                     ),
         .sck                     ( sck                     ),
+        .rst_n                   ( rst_n                   ),
         .mosi                    ( mosi                    ),
         .ssel                    ( ssel                    ),
         .miso                    ( miso                    ),
         .receivedData            ( receivedData  [7:0]  ),
         .dataToSend              ( doutb1 [7:0]   ),
+        .byteReceived            ( byteReceived),
 
         // 可选项
-        .readya1                 (readya1),
+        .readya0                 (readya0),
         .readyb1                 (readyb1),
         .addra0                  (addra0 [6:0]),
         .addrb1                  (addrb1 [6:0]),
@@ -70,7 +64,7 @@ module SPI_PINGPONG_top(
         .clka                    ( clk            ),
         .rsta                    ( !rst_n            ),
         .addra                   ( addra0    [6:0]  ),
-        .wea                     ( byteReceived    ),
+        .wea                     ( byteReceived    ), //
         .dina                    ( receivedData [7:0] ),
         .finisha                 ( finisha0         ),
         .readya                  ( readya0          ),
@@ -107,10 +101,15 @@ module SPI_PINGPONG_top(
         .rst_n(rst_n),
         .datain(doutb0),
         .dataout(dina1),
+
+
+        .readyb0(readyb0),
+        .readya1(readya1),
         .addrb0(addrb0), 
         .addra1(addra1),
         .finishb0(finishb0),
-        .finisha1(finisha1)
+        .finisha1(finisha1),
+        .wea(wea1)
     );
   
 endmodule

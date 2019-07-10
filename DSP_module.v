@@ -11,36 +11,48 @@ module DSP_module(
     output reg[6:0] addra1,
     output reg finishb0,
     output reg finisha1,
-    output wire wea1
+    output wire wea
 );
 
-    parameter DATALENGTH = 64;
+    parameter DATALENGTH = 8;
 
     // wire dataout_w;
     assign dataout = datain + 1;
     reg[6:0] addrb0_r;
 
-    // 与RAM有关的交互
-    // always @(posedge clk or negedge rst_n) begin
-    //     if(!rst_n) begin
-    //         wea1 <= 0;
-    //     end
-    //     else begin
+
     assign wea1 = readyb0 && readya1;
+    reg wea1_r, wea1_rr;
+    assign wea = wea1_r && wea1_rr;
 
     always @(posedge clk or negedge rst_n) begin
         if(!rst_n) begin
+            wea1_r <= 0;
+            wea1_rr <= 0;
+        end
+        else begin
+            wea1_r <= wea1;
+            wea1_rr <= wea1_r;
+        end
+    end
+
+
+    always @(posedge clk or negedge rst_n) begin
+        if(!rst_n || !readyb0) begin
             addrb0 <= 7'b0;
         end
-        else if(readyb0 && readya1) begin
+        else if(readyb0 && readya1)begin
             addrb0 <= addrb0 + 1;
         end
     end
+
 
     always @(posedge clk or negedge rst_n) begin
         if(!rst_n) begin
             finishb0 <= 0;
         end
+        else if(finishb0 == 1)
+            finishb0 <= ~finishb0;
         else if(addrb0 == (DATALENGTH - 1)) begin
             finishb0 <= ~finishb0;
         end
@@ -59,22 +71,18 @@ module DSP_module(
         end
     end
 
-    // always @(posedge clk or negedge rst_n) begin
-    //     if(!rst_n || ssel_risingEdge) begin
-    //         addra1 <= 7'b0;
-    //     end
-    //     else if(readya1 && (addra1 < data_counter)) begin
-    //         addra1 <= addra1 + 1;
-    //     end
-    // end
 
     always @(posedge clk or negedge rst_n) begin
         if(!rst_n) begin
             finisha1 <= 0;
         end
+        else if(finisha1 == 1)
+            finisha1 <= ~finisha1;
         else if(addra1 == (DATALENGTH - 1)) begin
             finisha1 <= ~finisha1;
         end
     end
+
+    
 endmodule
     
