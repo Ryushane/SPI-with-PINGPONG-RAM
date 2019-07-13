@@ -36,5 +36,5 @@ always @(posedge clk or negedge rst_n) begin
     end
 end
 
-DSP_module DSP_module(clk, rst_n, datain, dataout, readyb0, readya1, addrb0, addra1, finishb0, finisha1, wea1);
+DSP_module DSP_module(clk, rst_n, datain, dataout, readyb0, readya1, addrb0, addra1, finishb0, finisha1, wea);
 endmodule // 
